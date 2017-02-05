@@ -6,7 +6,11 @@
 package com.sgt.view;
 import com.sgt.model.Model;
 import java.awt.PopupMenu;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -49,6 +53,42 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
             cbPartEstudoBiblico.addItem(Back.get(i).toString());
         }  
     
+    }
+    
+    private void GravaProg(){
+        
+        if(txtEstudoBiblico.getText().isEmpty() || txtLeitura.getText().isEmpty() || txtPriVisita.getText().isEmpty() || txtRevisita.getText().isEmpty()|| cbAjuEstudoBiblico.getSelectedItem().equals("") || 
+                cbAjuPriVis.getSelectedItem().equals("")|| cbAjuRevisita.getSelectedItem().equals("") || cbPartEstudoBiblico.getSelectedItem().equals("") || cbPartLeitura.getSelectedItem().equals("") || 
+                cbPartPriVis.getSelectedItem().equals("") || cbPartRevisita.getSelectedItem().equals("") || cbSala.getSelectedItem().equals("")){
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
+        }else{
+            
+            SimpleDateFormat FormatUSADate = new SimpleDateFormat("yyyy-MM-dd");           
+            Map DadosProg = new HashMap();
+            DadosProg.put("Leitura", txtLeitura.getText());
+            DadosProg.put("Leitura Participante", cbPartLeitura.getSelectedItem());
+            DadosProg.put("Leitura Ponto", spLeituraPonto.getValue().toString());
+            DadosProg.put("Pri Visita", txtPriVisita.getText());
+            DadosProg.put("PVisita Participante", cbPartPriVis.getSelectedItem());
+            DadosProg.put("PVisita Ajudante", cbAjuPriVis.getSelectedItem());
+            DadosProg.put("PVisita Ponto", spPontoPriVis.getValue().toString());
+            DadosProg.put("Revisita", txtRevisita.getText());
+            DadosProg.put("Revisita Participante", cbPartRevisita.getSelectedItem());
+            DadosProg.put("Revisita Ajudante", cbAjuRevisita.getSelectedItem());
+            DadosProg.put("Revisita Ponto", spPontoRev.getValue().toString());
+            DadosProg.put("Estudo Biblico", txtEstudoBiblico.getText());
+            DadosProg.put("EsBiblico Participante", cbPartEstudoBiblico.getSelectedItem());
+            DadosProg.put("EsBiblico Ajudante", cbAjuEstudoBiblico.getSelectedItem());
+            DadosProg.put("EsBiblico Ponto", spPontoEstudoBiblico.getValue().toString());
+            DadosProg.put("Sala", cbSala.getSelectedItem());
+            DadosProg.put("Data", FormatUSADate.format(cbDateSem.get));
+            
+            
+            System.out.println(DadosProg.get("Data")); 
+        }
+        
+        
+        
     }
 
     /**
@@ -336,16 +376,15 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbPartRevisitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPartRevisitaActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_cbPartRevisitaActionPerformed
 
     private void cbPartEstudoBiblicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPartEstudoBiblicoActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_cbPartEstudoBiblicoActionPerformed
 
     private void btnSaveProgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveProgActionPerformed
-       Model CallModel = new Model();
-       CallModel.GetEstudantes();
+       GravaProg();
     }//GEN-LAST:event_btnSaveProgActionPerformed
 
 
