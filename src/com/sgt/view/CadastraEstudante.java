@@ -5,6 +5,12 @@
  */
 package com.sgt.view;
 
+import java.awt.Color;
+import com.sgt.model.Model;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author maste
@@ -16,6 +22,7 @@ public class CadastraEstudante extends javax.swing.JInternalFrame {
      */
     public CadastraEstudante() {
         initComponents();
+        this.getContentPane().setBackground(Color.decode("#009688"));
     }
 
     /**
@@ -29,40 +36,51 @@ public class CadastraEstudante extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtNomeEst = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtTelEst = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbSexEst = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        cbPrivEst = new javax.swing.JComboBox<>();
+        btnSaveEst = new javax.swing.JButton();
 
         setClosable(true);
+        setForeground(new java.awt.Color(249, 249, 249));
         setIconifiable(true);
         setTitle("Casdastro de Novo Estudante");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(249, 249, 249));
         jLabel1.setText("Novo Estudante");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(249, 249, 249));
         jLabel2.setText("Nome: ");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(249, 249, 249));
         jLabel3.setText("Telefone:");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(249, 249, 249));
         jLabel4.setText("Sexo:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Masculino", "Feminino" }));
+        cbSexEst.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Masculino", "Feminino" }));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(249, 249, 249));
         jLabel5.setText("Privilégio:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Ancião", "Servo Ministerial", "Publicador", "Publicador não Batizado", "Matriculado", "Pioneiro" }));
+        cbPrivEst.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Ancião", "Servo Ministerial", "Publicador", "Publicador não Batizado", "Matriculado", "Pioneiro" }));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485636510_floppy.png"))); // NOI18N
-        jButton1.setText("Salvar");
+        btnSaveEst.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485636510_floppy.png"))); // NOI18N
+        btnSaveEst.setText("Salvar");
+        btnSaveEst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveEstActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,19 +98,19 @@ public class CadastraEstudante extends javax.swing.JInternalFrame {
                             .addComponent(jLabel4))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbSexEst, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNomeEst, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel5))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField2)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtTelEst)
+                            .addComponent(cbPrivEst, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(298, 298, 298)
-                        .addComponent(jButton1)))
+                        .addComponent(btnSaveEst)))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -103,34 +121,75 @@ public class CadastraEstudante extends javax.swing.JInternalFrame {
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNomeEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTelEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbSexEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbPrivEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnSaveEst)
                 .addGap(51, 51, 51))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSaveEstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveEstActionPerformed
+          
+              
+       if(txtNomeEst.getText().isEmpty() || txtTelEst.getText().isEmpty() || cbPrivEst.getSelectedItem().equals("Selecione...") || cbSexEst.getSelectedItem().equals("Selecione...")){
+           JOptionPane.showMessageDialog(null, "Preencha todos os campos e tente novamente.");
+       } else{
+           
+            String Sex = cbSexEst.getSelectedItem().equals("Masculino") ? "M" : "F";
+           
+            Model Grv = new Model();
+            Map Dados = new HashMap();
+            Dados.put("Nome", txtNomeEst.getText());
+            Dados.put("Tel", txtTelEst.getText());
+            Dados.put("Sexo", Sex);
+            Dados.put("Priv", cbPrivEst.getSelectedItem());
+            
+            Map Execute = Grv.CadastraEstudante(Dados);
+            
+            if(Execute.get("Retorno").equals(true)){
+                int Decisao = JOptionPane.showConfirmDialog(null, "Dados Salvos com sucesso. Deseja cadastrar outro estudante?", "Alerta", JOptionPane.YES_NO_OPTION);
+                if(Decisao == 0){
+                    txtNomeEst.setText("");
+                    txtTelEst.setText("");
+                    cbPrivEst.setSelectedItem(null);
+                    cbSexEst.setSelectedItem(null);
+                }else{
+                    this.dispose();
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, Execute.get("Mensagem"));
+            }
+            
+       }
+        
+        
+      
+       
+       
+       
+    }//GEN-LAST:event_btnSaveEstActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton btnSaveEst;
+    private javax.swing.JComboBox<String> cbPrivEst;
+    private javax.swing.JComboBox<String> cbSexEst;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField txtNomeEst;
+    private javax.swing.JTextField txtTelEst;
     // End of variables declaration//GEN-END:variables
 }

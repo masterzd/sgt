@@ -23,7 +23,7 @@ public class DaoClass {
             conn = DriverManager.getConnection(db); 
             return conn;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,"Falha ao conectar ao banco de dados:"+ e);
+            JOptionPane.showMessageDialog(null,"Falha ao conectar ao banco de dados: "+ e);
             return null;
         }
                

@@ -18,7 +18,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
      */
     public MenuPrincipal() {
         initComponents();
-        this.getContentPane().setBackground(new Color(204, 188, 177));
+        this.getContentPane().setBackground(Color.decode("#009688"));
         this.setLocationRelativeTo(null);
     }
 
@@ -57,11 +57,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenu7 = new javax.swing.JMenu();
-        jMenuItem14 = new javax.swing.JMenuItem();
-        jMenuItem15 = new javax.swing.JMenuItem();
+        addEstudante = new javax.swing.JMenuItem();
+        callUser = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
+        jSair = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SGT - Menu Principal");
@@ -79,21 +79,27 @@ public class MenuPrincipal extends javax.swing.JFrame {
         );
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Bem vindo:");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Henrique Rocha");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Congregação: ");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Jardim Alvorada");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Circuito: ");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("BA - 034");
 
         menuFMM.setText("Novo");
@@ -144,6 +150,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem7.setText("Estudantes");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem7);
 
         jMenu2.add(jMenu6);
@@ -174,13 +185,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenu7.setText("Adicionar");
 
-        jMenuItem14.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem14.setText("Estudante");
-        jMenu7.add(jMenuItem14);
+        addEstudante.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        addEstudante.setText("Estudante");
+        addEstudante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addEstudanteActionPerformed(evt);
+            }
+        });
+        jMenu7.add(addEstudante);
 
-        jMenuItem15.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem15.setText("Usuário");
-        jMenu7.add(jMenuItem15);
+        callUser.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        callUser.setText("Usuário");
+        callUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                callUserActionPerformed(evt);
+            }
+        });
+        jMenu7.add(callUser);
 
         jMenu3.add(jMenu7);
 
@@ -193,8 +214,18 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenu4.setText("Ajuda");
         jMenuBar1.add(jMenu4);
 
-        jMenu5.setText("Sair");
-        jMenuBar1.add(jMenu5);
+        jSair.setText("Sair");
+        jSair.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jSairMouseClicked(evt);
+            }
+        });
+        jSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSairActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jSair);
 
         setJMenuBar(jMenuBar1);
 
@@ -246,6 +277,33 @@ public class MenuPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_menuFMMActionPerformed
 
+    private void addEstudanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEstudanteActionPerformed
+       CadastraEstudante CallTelaCE = new CadastraEstudante();
+       CallTelaCE.setVisible(true);
+       areaDesktop.add(CallTelaCE);
+    }//GEN-LAST:event_addEstudanteActionPerformed
+
+    private void callUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_callUserActionPerformed
+       CadastroUsuario CallTelaUser = new CadastroUsuario();
+       CallTelaUser.setVisible(true);
+       areaDesktop.add(CallTelaUser);
+    }//GEN-LAST:event_callUserActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        ConsultaEstudantes CallWindow = new ConsultaEstudantes();
+        CallWindow.setVisible(true);
+        CallWindow.getContentPane().setBackground(Color.decode("#009688"));
+        CallWindow.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSairActionPerformed
+       
+    }//GEN-LAST:event_jSairActionPerformed
+
+    private void jSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSairMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_jSairMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -282,7 +340,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem addEstudante;
     private javax.swing.JDesktopPane areaDesktop;
+    private javax.swing.JMenuItem callUser;
     private javax.swing.JMenuItem itemFSMM;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -293,7 +353,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
@@ -301,8 +360,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
@@ -312,6 +369,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JMenu jSair;
     private javax.swing.JMenu menuFMM;
     // End of variables declaration//GEN-END:variables
 }

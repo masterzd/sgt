@@ -5,7 +5,9 @@
  */
 package com.sgt.view;
 import com.sgt.model.Model;
+import java.awt.Color;
 import java.awt.PopupMenu;
+import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +27,7 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
     public NovoProgramaFSeuMelhor() {
         initComponents();
         PreecheCombobox();
+        this.getContentPane().setBackground(Color.decode("#009688"));
     }
     
     
@@ -59,7 +62,7 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
         
         if(txtEstudoBiblico.getText().isEmpty() || txtLeitura.getText().isEmpty() || txtPriVisita.getText().isEmpty() || txtRevisita.getText().isEmpty()|| cbAjuEstudoBiblico.getSelectedItem().equals("") || 
                 cbAjuPriVis.getSelectedItem().equals("")|| cbAjuRevisita.getSelectedItem().equals("") || cbPartEstudoBiblico.getSelectedItem().equals("") || cbPartLeitura.getSelectedItem().equals("") || 
-                cbPartPriVis.getSelectedItem().equals("") || cbPartRevisita.getSelectedItem().equals("") || cbSala.getSelectedItem().equals("")){
+                cbPartPriVis.getSelectedItem().equals("") || cbPartRevisita.getSelectedItem().equals("") || cbSala.getSelectedItem().equals("Selecione...") || spLeituraPonto.getValue().equals(0) || spPontoEstudoBiblico.getValue().equals(0) || spPontoPriVis.getValue().equals(0) || spPontoRev.getValue().equals(0)){
             JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
         }else{
             
@@ -81,10 +84,40 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
             DadosProg.put("EsBiblico Ajudante", cbAjuEstudoBiblico.getSelectedItem());
             DadosProg.put("EsBiblico Ponto", spPontoEstudoBiblico.getValue().toString());
             DadosProg.put("Sala", cbSala.getSelectedItem());
-            DadosProg.put("Data", FormatUSADate.format(cbDateSem.get));
+            DadosProg.put("Data", FormatUSADate.format(cbDateSem.getDate().getTime()));
             
+           Model CallModel = new Model();
+           Map Execute = CallModel.GrvProg(DadosProg);
+           
+           if(Execute.get("Retorno").equals(true)){
+               int decisao =  JOptionPane.showConfirmDialog(null, Execute.get("Mensagem"));
             
-            System.out.println(DadosProg.get("Data")); 
+               if(decisao == 0){
+                txtLeitura.setText(null);
+                cbPartLeitura.setSelectedItem(null);
+                spLeituraPonto.setValue(0);
+                txtPriVisita.setText(null);
+                cbPartPriVis.setSelectedItem(null);
+                cbAjuPriVis.setSelectedItem(null);
+                spPontoPriVis.setValue(0);
+                txtRevisita.setText(null);
+                cbPartRevisita.setSelectedItem(null);
+                cbAjuRevisita.setSelectedItem(null);
+                spPontoRev.setValue(0);
+                txtEstudoBiblico.setText(null);
+                cbPartEstudoBiblico.setSelectedItem(null);
+                cbAjuEstudoBiblico.setSelectedItem(null);
+                spPontoEstudoBiblico.setValue(0);
+                cbSala.setSelectedItem(null);
+               }else{
+                   this.dispose();
+               }
+            
+           }else{
+               JOptionPane.showMessageDialog(null, Execute.get("Mensagem"));
+           }
+           
+           
         }
         
         
@@ -124,7 +157,6 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         cbAjuRevisita = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
-        cbPartRevisita = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
         spPontoRev = new javax.swing.JSpinner();
         txtEstudoBiblico = new javax.swing.JTextField();
@@ -136,8 +168,8 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
         cbPartEstudoBiblico = new javax.swing.JComboBox<>();
         btnSaveProg = new javax.swing.JButton();
         cbPartLeitura = new javax.swing.JComboBox<>();
+        cbPartRevisita = new javax.swing.JComboBox<>();
 
-        setBackground(new java.awt.Color(204, 188, 177));
         setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setClosable(true);
         setIconifiable(true);
@@ -145,65 +177,83 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
         setToolTipText("");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Nova Programação");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Data:");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Sala:");
 
         cbSala.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "A", "B" }));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Leitura da Bíblia: ");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Revisita:");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Primeira Visita:");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Estudo Bíblico:");
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Participante:");
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Ponto:");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Participante:");
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Ajudante:");
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Ponto:");
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Participante:");
 
-        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel14.setText("Ajudante:");
-
-        cbPartRevisita.addActionListener(new java.awt.event.ActionListener() {
+        cbAjuRevisita.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbPartRevisitaActionPerformed(evt);
+                cbAjuRevisitaActionPerformed(evt);
             }
         });
 
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel14.setText("Ajudante:");
+
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Ponto:");
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Ponto:");
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Participante:");
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("Ajudante:");
 
         cbPartEstudoBiblico.addActionListener(new java.awt.event.ActionListener() {
@@ -229,83 +279,86 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel7)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addComponent(jLabel10)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel7)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(33, 33, 33)
+                                        .addComponent(jLabel10)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(cbPartPriVis, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(25, 25, 25)
+                                        .addComponent(jLabel11)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbAjuPriVis, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel12)
+                                        .addGap(37, 37, 37)
+                                        .addComponent(spPontoPriVis, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtLeitura, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel8)
+                                        .addGap(51, 51, 51)
+                                        .addComponent(cbPartLeitura, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(75, 75, 75)
+                                        .addComponent(jLabel9)
+                                        .addGap(37, 37, 37)
+                                        .addComponent(spLeituraPonto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtPriVisita, javax.swing.GroupLayout.PREFERRED_SIZE, 699, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, 697, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(cbPartPriVis, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25)
-                                .addComponent(jLabel11)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbAjuPriVis, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel12)
-                                .addGap(37, 37, 37)
-                                .addComponent(spPontoPriVis, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtLeitura, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel8)
-                                .addGap(51, 51, 51)
-                                .addComponent(cbPartLeitura, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(75, 75, 75)
-                                .addComponent(jLabel9)
-                                .addGap(37, 37, 37)
-                                .addComponent(spLeituraPonto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtPriVisita, javax.swing.GroupLayout.PREFERRED_SIZE, 699, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, 697, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(216, 216, 216)
-                        .addComponent(jLabel2)
-                        .addGap(40, 40, 40)
-                        .addComponent(cbDateSem, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(79, 79, 79)
-                        .addComponent(jLabel3)
-                        .addGap(61, 61, 61)
-                        .addComponent(cbSala, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtRevisita, javax.swing.GroupLayout.PREFERRED_SIZE, 697, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(jLabel13)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbPartRevisita, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25)
-                                .addComponent(jLabel14)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbAjuRevisita, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(72, 72, 72)
-                                .addComponent(jLabel15)
-                                .addGap(36, 36, 36)
-                                .addComponent(spPontoRev, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addComponent(jLabel17)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbPartEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25)
-                                .addComponent(jLabel18)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbAjuEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(72, 72, 72)
-                                .addComponent(jLabel16)
-                                .addGap(36, 36, 36)
-                                .addComponent(spPontoEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(400, 400, 400)
-                                .addComponent(btnSaveProg))))
+                                .addGap(216, 216, 216)
+                                .addComponent(jLabel2)
+                                .addGap(40, 40, 40)
+                                .addComponent(cbDateSem, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(79, 79, 79)
+                                .addComponent(jLabel3)
+                                .addGap(61, 61, 61)
+                                .addComponent(cbSala, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txtRevisita, javax.swing.GroupLayout.PREFERRED_SIZE, 697, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(30, 30, 30)
+                                        .addComponent(jLabel13)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbPartRevisita, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel14)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbAjuRevisita, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(72, 72, 72)
+                                        .addComponent(jLabel15)
+                                        .addGap(36, 36, 36)
+                                        .addComponent(spPontoRev, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(29, 29, 29)
+                                        .addComponent(jLabel17)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbPartEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(25, 25, 25)
+                                        .addComponent(jLabel18)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbAjuEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(72, 72, 72)
+                                        .addComponent(jLabel16)
+                                        .addGap(36, 36, 36)
+                                        .addComponent(spPontoEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(400, 400, 400)
+                                        .addComponent(btnSaveProg)))))
+                        .addContainerGap(212, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(329, 329, 329)
-                        .addComponent(jLabel1)))
-                .addContainerGap(212, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addGap(68, 478, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,9 +405,9 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
                     .addComponent(jLabel13)
                     .addComponent(cbAjuRevisita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
-                    .addComponent(cbPartRevisita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
-                    .addComponent(spPontoRev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spPontoRev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbPartRevisita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -367,7 +420,7 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
                     .addComponent(cbPartEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16)
                     .addComponent(spPontoEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(btnSaveProg)
                 .addGap(27, 27, 27))
         );
@@ -386,6 +439,10 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
     private void btnSaveProgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveProgActionPerformed
        GravaProg();
     }//GEN-LAST:event_btnSaveProgActionPerformed
+
+    private void cbAjuRevisitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAjuRevisitaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbAjuRevisitaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
