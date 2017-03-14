@@ -2,8 +2,6 @@
  * Classe responsável por fazer a camada de comunicação com o banco de dados Sqlite
  */
 package com.sgt.db;
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

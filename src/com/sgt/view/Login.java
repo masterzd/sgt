@@ -6,28 +6,41 @@
 package com.sgt.view;
 
 import java.awt.Color;
-import com.sgt.db.DaoClass;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import com.sgt.model.Model;
+import java.util.Map;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
- * @author maste
+ * @author Henrique Rocha de Souza
  */
 public class Login extends javax.swing.JFrame {
 
+    String Theme = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+
+    public void lookandfell() {
+
+        try {
+            UIManager.setLookAndFeel(Theme);
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+            System.out.println("Falha no tema" + e.getMessage());
+        }
+
+    }
+
     public void CheckLogin(String usuario, String senha) {
         Model CallModel = new Model();
-        Boolean Result = CallModel.MLogar(usuario, senha);
-
-        if (Result != true) {
+        Map Result = CallModel.MLogar(usuario, senha);
+        if (Result.get("erro").equals(true)) {
             JOptionPane.showMessageDialog(null, "Usuário ou senha Inválidos");
         } else {
             MenuPrincipal CallMenu = new MenuPrincipal();
             CallMenu.setVisible(true);
+            CallMenu.setNames(Result);
             this.dispose();
         }
 
@@ -37,9 +50,24 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     public Login() {
-        initComponents();
-        this.getContentPane().setBackground(Color.decode("#009688"));
-        this.setLocationRelativeTo(null);
+        Boolean User = Checkusers();
+        
+
+        if (User == true) {
+            initComponents();
+            this.getContentPane().setBackground(Color.decode("#009688"));
+            this.setLocationRelativeTo(null);
+            lookandfell();
+            getRootPane().setDefaultButton(btnLogar);
+            
+        }else{
+            
+            JOptionPane.showMessageDialog(this, "Parece que você está ultilizando o SGT pela primeira vez ou a base de dados atual foi apagada. Antes de continuarmos. Vamos cadastrar um novo usuário, ok?");           
+            CadUserEmptydb CallTela = new CadUserEmptydb();
+            CallTela.setVisible(true);
+            CallTela.setLocationRelativeTo(null);
+        }
+
     }
 
     /**
@@ -209,4 +237,10 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField txtUserName;
     private javax.swing.JPasswordField txtUserSenha;
     // End of variables declaration//GEN-END:variables
+
+    private Boolean Checkusers() {
+        Model CallModel = new Model();
+        Boolean Exe = CallModel.BuscaUser();
+        return Exe;
+    }
 }

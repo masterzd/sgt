@@ -72,7 +72,7 @@ public class CadastraEstudante extends javax.swing.JInternalFrame {
         jLabel5.setForeground(new java.awt.Color(249, 249, 249));
         jLabel5.setText("Privilégio:");
 
-        cbPrivEst.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Ancião", "Servo Ministerial", "Publicador", "Publicador não Batizado", "Matriculado", "Pioneiro" }));
+        cbPrivEst.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Ancião", "Servo Ministerial", "Publicador", "Matriculado", "Pioneiro", "Desqualificado" }));
 
         btnSaveEst.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485636510_floppy.png"))); // NOI18N
         btnSaveEst.setText("Salvar");

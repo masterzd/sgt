@@ -3,8 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/view/DetalhesEstudante.java</file>
+            <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/view/ConsultaFSeuMelhor.java</file>
+            <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/view/Login.java</file>
+            <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/view/Periodo.java</file>
+            <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/view/NovoProgramaFSeuMelhor.java</file>
             <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/model/Model.java</file>
+            <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/db/DaoClass.java</file>
             <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/view/CadastroUsuario.java</file>
+            <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/view/PreferenciasClass.java</file>
+            <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/view/CadUserEmptydb.java</file>
             <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/view/MenuPrincipal.java</file>
             <file>file:/E:/Projetos%20Java/SGTC/src/com/sgt/view/ConsultaEstudantes.java</file>
         </group>

@@ -5,6 +5,25 @@
  */
 package com.sgt.view;
 
+import com.sgt.model.Model;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import static java.lang.System.out;
+import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.hadoop.fs.BufferedFSInputStream;
+
 /**
  *
  * @author maste
@@ -28,41 +47,48 @@ public class PreferenciasClass extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnBkp = new javax.swing.JButton();
+        btnDefaultRestore = new javax.swing.JButton();
+        btnRestore = new javax.swing.JButton();
 
+        setClosable(true);
+        setMaximizable(true);
         setTitle("Preferências do Usuário");
         setToolTipText("");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Preferências:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setText("Nome da Congregação: ");
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jLabel3.setText("Circuito: ");
-
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Gerência de Dados:");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485912169_vector_66_12.png"))); // NOI18N
-        jButton1.setText("Backup");
-        jButton1.setToolTipText("");
+        btnBkp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485912169_vector_66_12.png"))); // NOI18N
+        btnBkp.setText("Backup");
+        btnBkp.setToolTipText("");
+        btnBkp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBkpActionPerformed(evt);
+            }
+        });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485912315_free-27.png"))); // NOI18N
-        jButton2.setText("Apagar ");
-        jButton2.setToolTipText("");
+        btnDefaultRestore.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485912315_free-27.png"))); // NOI18N
+        btnDefaultRestore.setText("Apagar ");
+        btnDefaultRestore.setToolTipText("");
+        btnDefaultRestore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDefaultRestoreActionPerformed(evt);
+            }
+        });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485912248_backup-restore.png"))); // NOI18N
-        jButton3.setText("Restaurar");
-        jButton3.setToolTipText("");
+        btnRestore.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485912248_backup-restore.png"))); // NOI18N
+        btnRestore.setText("Restaurar");
+        btnRestore.setToolTipText("");
+        btnRestore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRestoreActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -72,62 +98,134 @@ public class PreferenciasClass extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4)))
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(95, 95, 95)
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(190, 190, 190)
+                        .addComponent(btnBkp, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(48, 48, 48)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnRestore, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(350, Short.MAX_VALUE))
+                        .addComponent(btnDefaultRestore, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(225, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(jLabel1)
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(142, 142, 142)
+                .addGap(59, 59, 59)
                 .addComponent(jLabel4)
-                .addGap(39, 39, 39)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(82, Short.MAX_VALUE))
+                    .addComponent(btnBkp, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDefaultRestore, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRestore, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(271, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBkpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBkpActionPerformed
+        try {
+            Copydb();
+        } catch (IOException ex) {
+            Logger.getLogger(PreferenciasClass.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnBkpActionPerformed
+
+    private void btnDefaultRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDefaultRestoreActionPerformed
+       
+         int decisao = JOptionPane.showConfirmDialog(this, "ATENÇÂO!!! Todos os dados do Sistema serão perdidos!! Tem certeza que deseja apagar tudo?", "Alerta", JOptionPane.YES_NO_OPTION);
+        
+         if(decisao == 0){
+             
+             Model CallModel = new Model();
+             Boolean Exe = CallModel.DeleteAll();
+             
+             if(Exe == true){
+                 JOptionPane.showMessageDialog(this, "Dados Apagados com sucesso! Favor iniciar o programa novamente.");
+                 System.exit(0);
+             }else{
+                 JOptionPane.showMessageDialog(this, "Houve um erro ao executar a ação!!");
+             }
+         }
+        
+        
+        
+    }//GEN-LAST:event_btnDefaultRestoreActionPerformed
+
+    private void btnRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestoreActionPerformed
+
+        JFileChooser open = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos_Dados", "db");
+        open.setDialogTitle("Selecione o arquivo com os dados do sistema");
+        open.setFileFilter(filter);
+        int retorno = open.showOpenDialog(null);
+
+        if (retorno == 0) {
+            int decisao = JOptionPane.showConfirmDialog(this, "ATENÇÂO!!! Essa ação não pode ser desfeita podendo ocasionar em perda de dados. Tem certeza que deseja restaurar o arquivo de backup?", "Alerta", JOptionPane.YES_NO_OPTION);
+
+            if (decisao == 0) {
+                try {
+                    FileChannel ori = new FileInputStream(open.getSelectedFile().getAbsolutePath()).getChannel();
+                    FileChannel dest = new FileOutputStream("C:\\SGT\\db\\emt.db").getChannel();
+                    dest.transferFrom(ori, 0, ori.size());
+
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(PreferenciasClass.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(PreferenciasClass.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                JOptionPane.showMessageDialog(this, "Dados restaurados com sucesso. Favor iniciar o programa novamente.");
+                System.exit(0);
+            }
+        }
+
+
+    }//GEN-LAST:event_btnRestoreActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnBkp;
+    private javax.swing.JButton btnDefaultRestore;
+    private javax.swing.JButton btnRestore;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
+
+    private void Copydb() throws FileNotFoundException, IOException {
+
+        File Folder = new File(System.getProperty("user.home") + "\\Desktop\\BKPSGT");
+        SimpleDateFormat FormatBr = new SimpleDateFormat("dd-MM-yyyy");
+        if (!Folder.isDirectory()) {
+            Folder.mkdir();
+        }
+
+        try {
+
+            FileInputStream FileEnt = new FileInputStream("C:\\SGT\\db\\emt.db");
+            ZipOutputStream ZipFile = new ZipOutputStream(new FileOutputStream(System.getProperty("user.home") + "\\Desktop\\BKPSGT\\BKP_" + FormatBr.format(new java.util.Date()) + ".zip"));
+            ZipFile.putNextEntry(new ZipEntry("emt.db"));
+            byte[] buffer = new byte[1024];
+            int StreamByte;
+            while ((StreamByte = FileEnt.read(buffer)) > 0) {
+                ZipFile.write(buffer, 0, StreamByte);
+            }
+
+            ZipFile.closeEntry();
+            ZipFile.close();
+            FileEnt.close();
+
+            JOptionPane.showMessageDialog(null, "Backup Feito com sucesso! Verifique sua area de trabalho.");
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Falha ao realizar o Backup. log de erro: " + e.getMessage());
+        }
+
+    }
 }

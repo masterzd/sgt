@@ -10,6 +10,24 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import com.sgt.util.UltilClass;
+import com.sgt.db.DaoClass;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import org.freixas.jcalendar.JCalendarCombo;
+import org.sqlite.SQLiteException;
+import net.proteanit.sql.DbUtils;
+import org.freixas.jcalendar.DateEvent;
+import org.freixas.jcalendar.DateListener;
 
 /**
  *
@@ -17,28 +35,61 @@ import com.sgt.util.UltilClass;
  */
 public class ConsultaEstudantes extends javax.swing.JFrame {
     
+    DetalhesEstudante ponte;    
     int id = 0;
     JLabel lbNome = null;
     JLabel lbSex = null;
+    JLabel lbSala = null;
+    JLabel lbData = null;
+    JLabel lbData2 = null;
     JTextField txtNomeEs = null;
+    JComboBox cbSexo = null;
+    JComboBox cbSala = null;
+    JCalendarCombo Calendar1 = null;
+    JCalendarCombo Calendar2 = null;
+    
+    private void CallDetalhes(String Nome) throws SQLException{
+        
+        if(ponte == null){            
+            ponte = new DetalhesEstudante();
+            ponte.setVisible(true);
+            ponte.setLocationRelativeTo(null);
+            ponte.ponteRecebe(Nome);            
+        }else{
+             ponte.setVisible(true);
+             ponte.setLocationRelativeTo(null);
+             ponte.setState(DetalhesEstudante.NORMAL);
+             ponte.ponteRecebe(Nome);
+        }        
+    }
     
     
-//    private void CheckElementos(int cod) {
-//
-//        if (cod == 1) {
-//            this.getContentPane().remove(lbNome);
-//            this.getContentPane().remove(txtNomeEs);
-//        } else if (cod == 2) {
-//            this.getContentPane().remove(txtInfoSex);
-//            this.getContentPane().remove(cbSex);
-//        } else if (cod == 3) {
-//            this.getContentPane().remove(txtInfoPer);
-//            this.getContentPane().remove(calendar1);
-//            this.getContentPane().remove(calendar2);
-//        }
-//    }
-    
-    
+
+    private void CheckElementos(int cod) {
+
+        switch (id) {
+            case 1:
+                this.getContentPane().remove(lbNome);
+                this.getContentPane().remove(txtNomeEs);
+                break;
+            case 2:
+                this.getContentPane().remove(lbSex);
+                this.getContentPane().remove(cbSexo);
+                break;
+            case 3:
+                this.getContentPane().remove(lbSala);
+                this.getContentPane().remove(cbSala);
+                break;
+            case 4:
+                this.getContentPane().remove(lbData);
+                this.getContentPane().remove(Calendar1);
+                this.getContentPane().remove(Calendar2);
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      * Creates new form ConsultaEstudantes
      */
@@ -46,6 +97,8 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
         initComponents();
         this.getContentPane().setBackground(Color.decode("#009688"));
     }
+
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,10 +113,16 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         cbFiltro = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbEstudantes = new javax.swing.JTable(){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Busaca de Estudantes");
+        setTitle("Busca de Estudantes");
+        setAlwaysOnTop(true);
         setAutoRequestFocus(false);
         setResizable(false);
 
@@ -82,107 +141,293 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbEstudantes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Nome", "Carac. Oratória", "Sala", "Ajudante", "Data de Designação", "Data Ajudante", "Sexo", "Privilégio"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+                "Title 1", "Title 2", "Title 3", "Title 4", "Título 5", "Título 6", "Título 7", "Título 8"}
+        )
+    );
+    jScrollPane1.setViewportView(tbEstudantes);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(405, 405, 405)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(175, 175, 175)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 996, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(35, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jLabel1)
-                .addGap(79, 79, 79)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+    getContentPane().setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(405, 405, 405)
+                    .addComponent(jLabel1))
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(175, 175, 175)
                     .addComponent(jLabel2)
-                    .addComponent(cbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
-        );
+                    .addGap(18, 18, 18)
+                    .addComponent(cbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(77, 77, 77)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 891, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addContainerGap(96, Short.MAX_VALUE))
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addGap(52, 52, 52)
+            .addComponent(jLabel1)
+            .addGap(79, 79, 79)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel2)
+                .addComponent(cbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(23, 23, 23))
+    );
 
-        pack();
+    pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFiltroActionPerformed
-        
-        if(cbFiltro.getSelectedItem().equals("Nome")){
-           
-           UltilClass CallUtil = new UltilClass();
-           lbNome = CallUtil.GeraLabel("Informe o nome:", "#ffffff", 40, 200, 480, 145);
-           this.getContentPane().add(lbNome);
-                     
-           txtNomeEs = CallUtil.GeraTexfield(25, 400, 600, 153);
-           this.getContentPane().add(txtNomeEs);
-           
-           id = 1;
-   
-        }else if(cbFiltro.getSelectedItem().equals("Sexo")){
+
+        if (cbFiltro.getSelectedItem().equals("Nome")) {
             
+            this.setTitle("Busca por nome - SGT");
+            
+            if (id >= 0) {
+                CheckElementos(id);
+            }
+
+            id = 1;
+
+            UltilClass CallUtil = new UltilClass();
+            lbNome = CallUtil.GeraLabel("Informe o nome:", "#ffffff", 40, 200, 480, 145);
+            this.getContentPane().add(lbNome);
+
+            txtNomeEs = CallUtil.GeraTexfield(25, 400, 600, 153);
+            this.getContentPane().add(txtNomeEs);
+            txtNomeEs.getDocument().addDocumentListener(new DocumentListener() {
+
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    try {
+                        buscaDinamica(id, txtNomeEs.getText(), null);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ConsultaEstudantes.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    try {
+                        buscaDinamica(id, txtNomeEs.getText(), null);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ConsultaEstudantes.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    try {
+                        buscaDinamica(id, txtNomeEs.getText(), null);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ConsultaEstudantes.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            });
+
+        } else if (cbFiltro.getSelectedItem().equals("Sexo")) {
+            
+             this.setTitle("Busca por sexo - SGT");
+            
+            if (id >= 0) {
+                CheckElementos(id);
+            }
             id = 2;
+            UltilClass CallUtil = new UltilClass();
+            lbSex = CallUtil.GeraLabel("Informe o Sexo:", "#ffffff", 40, 200, 480, 145);
+            this.getContentPane().add(lbSex);
+
+            String[] Options = {"", "Masculino", "Feminino"};
+
+            cbSexo = CallUtil.GeraComboBox(Options, 25, 80, 600, 153);
+            this.getContentPane().add(cbSexo);
+            cbSexo.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if (e.getStateChange() == 1) {
+                        try {
+                            buscaDinamica(id, cbSexo.getSelectedItem().toString(), null);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ConsultaEstudantes.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            });
+        } else if (cbFiltro.getSelectedItem().equals("Sala")) {
             
-           lbSex = new JLabel(); 
-           lbSex.setVisible(true);
-           lbSex.setText("Informe o Sexo:");
-           lbSex.setForeground(Color.WHITE);
-           lbSex.setSize(200,40);
-           lbSex.setLocation(480, 145);
-           this.getContentPane().add(lbSex);
+             this.setTitle("Busca por sala - SGT");
             
-            
-            
+            if (id >= 0) {
+                CheckElementos(id);
+            }
+
+            id = 3;
+
+            UltilClass CallUtil = new UltilClass();
+            lbSala = CallUtil.GeraLabel("Informe a Sala:", "#ffffff", 40, 200, 480, 145);
+            this.getContentPane().add(lbSala);
+
+            String[] Options = {"", "A", "B"};
+
+            cbSala = CallUtil.GeraComboBox(Options, 25, 80, 600, 153);
+            this.getContentPane().add(cbSala);
+            cbSala.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if (e.getStateChange() == 1) {
+                        try {
+                            buscaDinamica(id, cbSala.getSelectedItem().toString(), null);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ConsultaEstudantes.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            });
+
+        } else if (cbFiltro.getSelectedItem().equals("Data de Designação") || cbFiltro.getSelectedItem().equals("Data em foi Ajudante")) {
+
+            if (id >= 0) {
+                CheckElementos(id);
+            }
+
+            id = 4;
+            int opc;
+            if (cbFiltro.getSelectedItem().equals("Data de Designação")) {
+                opc = 4;
+                this.setTitle("Busca por data de designação - SGT");
+            } else {
+                 this.setTitle("Busca por data em que foi ajudante - SGT");
+                opc = 5;
+            }
+
+            UltilClass CallUtil = new UltilClass();
+            lbData = CallUtil.GeraLabel("Informe o período:", "#ffffff", 40, 200, 480, 145);
+            this.getContentPane().add(lbData);
+
+            Calendar1 = CallUtil.GerarCalendario(35, 160, 600, 150);
+            Calendar2 = CallUtil.GerarCalendario(35, 160, 800, 150);
+
+            this.getContentPane().add(Calendar1);
+            this.getContentPane().add(Calendar2);
+
+            Calendar2.addDateListener(new DateListener() {
+                @Override
+                public void dateChanged(DateEvent de) {
+                    SimpleDateFormat DataFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String[] Periodo = {DataFormat.format(Calendar1.getDate().getTime()), DataFormat.format(Calendar2.getDate().getTime())};
+                    try {
+                        buscaDinamica(opc, null, Periodo);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ConsultaEstudantes.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+            });
+
         }
-        
+
         this.repaint();
-        
-        
-        
-        
-        
+
+
     }//GEN-LAST:event_cbFiltroActionPerformed
+
+    private void buscaDinamica(int Opc, String Dados, String[] Periodo) throws SQLException {
+        String Sql = null;
+        int interrogacao = 0;
+
+        System.out.println(Dados);
+        System.out.println(Opc);
+
+        switch (Opc) {
+            case 1:
+                Sql = "SELECT est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_nome LIKE ?";
+                interrogacao = 1;
+                break;
+            case 2:
+                Sql = "SELECT est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_sex LIKE ?";
+
+                interrogacao = 1;
+                break;
+            case 3:
+                Sql = "SELECT est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_sala LIKE ?";
+                interrogacao = 1;
+                break;
+            case 4:
+                Sql = "SELECT est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_dt_desig BETWEEN ? AND ? ORDER BY est_dt_desig ASC";
+                interrogacao = 2;
+                break;
+            case 5:
+                Sql = "SELECT est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_dt_aju BETWEEN ? AND ? ORDER BY est_dt_aju ASC";
+                interrogacao = 2;
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "Informe uma opção de filtro válida");
+                break;
+        }
+
+        try {
+
+            PreparedStatement Pmp = DaoClass.conectar().prepareStatement(Sql);
+            int x = 0;
+            for (int i = 1; i <= interrogacao; i++) {
+                if (Opc <= 3) {
+                    Pmp.setString(i, Dados + "%");
+                } else if (Opc == 4 || Opc == 5) {
+                    Pmp.setString(i, Periodo[x]);
+                }
+                x++;
+            }
+            ResultSet rs = Pmp.executeQuery();
+            
+            DaoClass.conectar().close();
+
+              tbEstudantes.setModel(DbUtils.resultSetToTableModel(rs));
+              tbEstudantes.getColumnModel().getColumn(0).setHeaderValue("Nome");
+              tbEstudantes.getColumnModel().getColumn(1).setHeaderValue("Proximo Ponto");
+              tbEstudantes.getColumnModel().getColumn(2).setHeaderValue("Sala");
+              tbEstudantes.getColumnModel().getColumn(3).setHeaderValue("Ajudante");
+              tbEstudantes.getColumnModel().getColumn(4).setHeaderValue("Ultima designação");
+              tbEstudantes.getColumnModel().getColumn(5).setHeaderValue("Utima vez que foi ajudante");
+              tbEstudantes.getColumnModel().getColumn(6).setHeaderValue("Sexo");
+              tbEstudantes.getColumnModel().getColumn(7).setHeaderValue("Privilégio");
+              
+              tbEstudantes.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if(e.getClickCount() == 2){      
+                        int line = tbEstudantes.getSelectedRow();
+                        String Nome = tbEstudantes.getModel().getValueAt(line, 0).toString();
+                        try {
+                            CallDetalhes(Nome);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ConsultaEstudantes.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                
+                  
+              });
+              
+              
+
+
+        } catch (SQLiteException e) {
+            JOptionPane.showMessageDialog(null, "Falha ao buscar os dados: " + e.getMessage());
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -224,6 +469,7 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbEstudantes;
     // End of variables declaration//GEN-END:variables
+
 }

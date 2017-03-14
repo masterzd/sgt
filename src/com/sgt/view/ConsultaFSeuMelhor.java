@@ -6,10 +6,15 @@
 package com.sgt.view;
 import com.sgt.model.Model;
 import java.awt.Color;
+import java.awt.PopupMenu;
+import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
@@ -17,12 +22,12 @@ import javax.swing.JOptionPane;
  *
  * @author maste
  */
-public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
+public class ConsultaFSeuMelhor extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form NovoProgramaFSeuMelhor
      */
-    public NovoProgramaFSeuMelhor() {
+    public ConsultaFSeuMelhor() {
         initComponents();
         PreecheCombobox();
         this.getContentPane().setBackground(Color.decode("#009688"));
@@ -56,7 +61,7 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
     
     }
     
-    private void GravaProg(){
+    private void UpdProg() throws SQLException{
         
         if(txtEstudoBiblico.getText().isEmpty() || txtLeitura.getText().isEmpty() || txtPriVisita.getText().isEmpty() || txtRevisita.getText().isEmpty()|| cbAjuEstudoBiblico.getSelectedItem().equals("") || 
                 cbAjuPriVis.getSelectedItem().equals("")|| cbAjuRevisita.getSelectedItem().equals("") || cbPartEstudoBiblico.getSelectedItem().equals("") || cbPartLeitura.getSelectedItem().equals("") || 
@@ -83,34 +88,15 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
             DadosProg.put("EsBiblico Ponto", spPontoEstudoBiblico.getValue().toString());
             DadosProg.put("Sala", cbSala.getSelectedItem());
             DadosProg.put("Data", FormatUSADate.format(cbDateSem.getDate().getTime()));
+            DadosProg.put("id", lblId.getText());
             
            Model CallModel = new Model();
-           Map Execute = CallModel.GrvProg(DadosProg);
+           Map Execute = CallModel.UpdProg(DadosProg);
+           
+            System.out.println(Execute.get("Retorno"));
            
            if(Execute.get("Retorno").equals(true)){
-               int decisao =  JOptionPane.showConfirmDialog(null, Execute.get("Mensagem"));
-            
-               if(decisao == 0){
-                txtLeitura.setText(null);
-                cbPartLeitura.setSelectedItem(null);
-                spLeituraPonto.setValue(0);
-                txtPriVisita.setText(null);
-                cbPartPriVis.setSelectedItem(null);
-                cbAjuPriVis.setSelectedItem(null);
-                spPontoPriVis.setValue(0);
-                txtRevisita.setText(null);
-                cbPartRevisita.setSelectedItem(null);
-                cbAjuRevisita.setSelectedItem(null);
-                spPontoRev.setValue(0);
-                txtEstudoBiblico.setText(null);
-                cbPartEstudoBiblico.setSelectedItem(null);
-                cbAjuEstudoBiblico.setSelectedItem(null);
-                spPontoEstudoBiblico.setValue(0);
-                cbSala.setSelectedItem(null);
-               }else{
-                   this.dispose();
-               }
-            
+               JOptionPane.showMessageDialog(this, "Dados Atualizados com sucesso!!");            
            }else{
                JOptionPane.showMessageDialog(null, Execute.get("Mensagem"));
            }
@@ -162,16 +148,19 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
         cbAjuEstudoBiblico = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
         cbPartEstudoBiblico = new javax.swing.JComboBox<>();
-        btnSaveProg = new javax.swing.JButton();
+        btnUpdProg = new javax.swing.JButton();
         cbPartLeitura = new javax.swing.JComboBox<>();
         cbPartRevisita = new javax.swing.JComboBox<>();
         jLabel19 = new javax.swing.JLabel();
+        btnsearch = new javax.swing.JButton();
+        btnPrint = new javax.swing.JButton();
         cbDateSem = new org.freixas.jcalendar.JCalendarCombo();
+        lblId = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setClosable(true);
         setIconifiable(true);
-        setTitle("Nova Programação Faça seu Melhor");
+        setTitle("Consulta dos programas cadastrados");
         setToolTipText("");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -256,37 +245,46 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
             }
         });
 
-        btnSaveProg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485636510_floppy.png"))); // NOI18N
-        btnSaveProg.setText("Salvar");
-        btnSaveProg.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdProg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485636510_floppy.png"))); // NOI18N
+        btnUpdProg.setText("Atualizar");
+        btnUpdProg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveProgActionPerformed(evt);
+                btnUpdProgActionPerformed(evt);
             }
         });
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(249, 249, 249));
-        jLabel19.setText("Nova Programação");
+        jLabel19.setText("Consulta Programa");
+
+        btnsearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1485832605_Search.png"))); // NOI18N
+        btnsearch.setText("Buscar");
+        btnsearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnsearchActionPerformed(evt);
+            }
+        });
+
+        btnPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sgt/img/1487733364_printer-blue.png"))); // NOI18N
+        btnPrint.setText("Imprimir");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
+
+        lblId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblId.setText("ID");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel19)
-                .addGap(457, 457, 457))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(370, 370, 370)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbDateSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(jLabel3)
-                        .addGap(61, 61, 61)
-                        .addComponent(cbSala, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(468, 468, 468)
+                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(177, 177, 177)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -312,16 +310,6 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
                                         .addComponent(jLabel12)
                                         .addGap(37, 37, 37)
                                         .addComponent(spPontoPriVis, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtLeitura, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel8)
-                                        .addGap(51, 51, 51)
-                                        .addComponent(cbPartLeitura, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(75, 75, 75)
-                                        .addComponent(jLabel9)
-                                        .addGap(37, 37, 37)
-                                        .addComponent(spLeituraPonto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(txtPriVisita, javax.swing.GroupLayout.PREFERRED_SIZE, 699, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, 697, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -352,28 +340,58 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
                                         .addGap(72, 72, 72)
                                         .addComponent(jLabel16)
                                         .addGap(36, 36, 36)
-                                        .addComponent(spPontoEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(400, 400, 400)
-                                        .addComponent(btnSaveProg)))))))
+                                        .addComponent(spPontoEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(124, 124, 124)
+                                .addComponent(txtLeitura, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel8)
+                                .addGap(27, 27, 27)
+                                .addComponent(cbPartLeitura, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(72, 72, 72)
+                                .addComponent(jLabel9)
+                                .addGap(37, 37, 37)
+                                .addComponent(spLeituraPonto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(471, 471, 471)
+                        .addComponent(btnUpdProg)
+                        .addGap(84, 84, 84)
+                        .addComponent(btnPrint))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(255, 255, 255)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbDateSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbSala, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48)
+                        .addComponent(btnsearch)))
                 .addContainerGap(210, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lblId)
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(28, 28, 28)
                 .addComponent(jLabel19)
-                .addGap(59, 59, 59)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(cbSala, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(cbDateSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(3, 3, 3)))
-                .addGap(64, 64, 64)
+                        .addGap(70, 70, 70))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(cbSala, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnsearch))
+                        .addGap(59, 59, 59)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtLeitura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
@@ -418,9 +436,13 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
                     .addComponent(cbPartEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16)
                     .addComponent(spPontoEstudoBiblico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addComponent(btnSaveProg)
-                .addGap(50, 50, 50))
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpdProg)
+                    .addComponent(btnPrint))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblId)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -434,17 +456,73 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_cbPartEstudoBiblicoActionPerformed
 
-    private void btnSaveProgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveProgActionPerformed
-       GravaProg();
-    }//GEN-LAST:event_btnSaveProgActionPerformed
+    private void btnUpdProgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdProgActionPerformed
+        try {
+            UpdProg();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaFSeuMelhor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnUpdProgActionPerformed
 
     private void cbAjuRevisitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAjuRevisitaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbAjuRevisitaActionPerformed
 
+    private void btnsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsearchActionPerformed
+        
+        if(cbSala.getSelectedItem().equals("Selecione...")){
+            JOptionPane.showMessageDialog(this, "Informe a data e a sala.");
+        }else{
+           Model CallModel = new Model();
+           SimpleDateFormat FormatUSADate = new SimpleDateFormat("yyyy-MM-dd"); 
+           Map Dados = new HashMap();
+           Dados.put("Data", FormatUSADate.format(cbDateSem.getDate().getTime()));
+           Dados.put("Sala", cbSala.getSelectedItem());
+           
+           Map ExeCon = CallModel.BuscaProgramacao(Dados);
+           
+           if(ExeCon.get("Result").equals(false)){
+               JOptionPane.showMessageDialog(this, "Não foi encontrado nenhum programa nessa data!!");
+           }else{
+               
+               txtLeitura.setText(ExeCon.get("Leitura").toString());
+               txtPriVisita.setText(ExeCon.get("PriVisita").toString());
+               txtRevisita.setText(ExeCon.get("Revista").toString());
+               txtEstudoBiblico.setText(ExeCon.get("Estudo").toString());
+               lblId.setText(ExeCon.get("id").toString());
+               
+               cbPartLeitura.setSelectedItem(ExeCon.get("PLeitura"));
+               cbPartPriVis.setSelectedItem(ExeCon.get("PPriVisita"));
+               cbAjuPriVis.setSelectedItem(ExeCon.get("APriVisita"));
+               cbPartRevisita.setSelectedItem(ExeCon.get("PRevisita"));
+               cbAjuRevisita.setSelectedItem(ExeCon.get("ARevisita"));
+               cbPartEstudoBiblico.setSelectedItem(ExeCon.get("PEstudo"));
+               cbAjuEstudoBiblico.setSelectedItem(ExeCon.get("AEstudo"));
+               
+               spLeituraPonto.setValue(Integer.parseInt(ExeCon.get("PoLeitura").toString()));
+               spPontoPriVis.setValue(Integer.parseInt(ExeCon.get("PoPriVisita").toString()));
+               spPontoRev.setValue(Integer.parseInt(ExeCon.get("PoRevisita").toString()));
+               spPontoEstudoBiblico.setValue(Integer.parseInt(ExeCon.get("PoEstudo").toString()));
+               
+           }
+           
+           
+        }
+       
+        
+    }//GEN-LAST:event_btnsearchActionPerformed
+
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        Periodo CallPer = new Periodo();
+        CallPer.setVisible(true);
+        CallPer.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnPrintActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSaveProg;
+    private javax.swing.JButton btnPrint;
+    private javax.swing.JButton btnUpdProg;
+    private javax.swing.JButton btnsearch;
     private javax.swing.JComboBox<String> cbAjuEstudoBiblico;
     private javax.swing.JComboBox<String> cbAjuPriVis;
     private javax.swing.JComboBox<String> cbAjuRevisita;
@@ -472,6 +550,7 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lblId;
     private javax.swing.JSpinner spLeituraPonto;
     private javax.swing.JSpinner spPontoEstudoBiblico;
     private javax.swing.JSpinner spPontoPriVis;
