@@ -304,7 +304,7 @@ public class Model {
 
     public Map UpdateEstudante(Map Dados) {
 
-        String Sql = "UPDATE estudantes SET est_sit = ?, est_tel = ?, est_pnt_cs = ?, est_ppnt_cs = ?, est_aju = ?, est_sex = ?, est_sala = ? WHERE est_nome = ?";
+        String Sql = "UPDATE estudantes SET est_sit = ?, est_tel = ?, est_pnt_cs = ?, est_ppnt_cs = ?, est_aju = ?, est_sex = ?, est_sala = ?, est_nome = ? WHERE est_cod = ?";
 
         try {
 
@@ -317,6 +317,7 @@ public class Model {
             Pmp.setString(6, Dados.get("Sexo").toString());
             Pmp.setString(7, Dados.get("Sala").toString());
             Pmp.setString(8, Dados.get("Nome").toString());
+            Pmp.setString(9, Dados.get("ID").toString());
 
             int rs = Pmp.executeUpdate();
 

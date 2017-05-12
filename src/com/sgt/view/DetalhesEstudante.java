@@ -30,12 +30,12 @@ public class DetalhesEstudante extends javax.swing.JFrame {
     }
     
     /* função que irá fazer ponte com a tela de consulta estudantes */
-    public void ponteRecebe(String Nome) throws SQLException{
+    public void ponteRecebe(String Nome) throws SQLException, ClassNotFoundException{
         
         this.setTitle("Detalhes de: " + Nome + " - SGT");
         String Sql1 = "SELECT * FROM estudantes WHERE est_nome = ?";
-        String Sql2 = "SELECT * FROM programacao WHERE prog_oradorD1 = ? or prog_oradorD2 = ? or prog_oradorD3 = ? or prog_oradorD4 = ?";
-        String Sql3 = "SELECT * FROM programacao WHERE prog_ajudanteD2 = ? or prog_ajudanteD3 = ? or prog_ajudanteD4 = ?";
+        String Sql2 = "SELECT * FROM programacao WHERE prog_oradorD1 LIKE ? or prog_oradorD2 LIKE ? or prog_oradorD3 LIKE ? or prog_oradorD4 LIKE ?";
+        String Sql3 = "SELECT * FROM programacao WHERE prog_ajudanteD2 LIKE ? or prog_ajudanteD3 LIKE ? or prog_ajudanteD4 LIKE ?";
         
             
         
@@ -52,21 +52,23 @@ public class DetalhesEstudante extends javax.swing.JFrame {
                 txtContato.setText(rs1.getString("est_tel"));
                 txtDataAju.setText(rs1.getString("est_dt_aju"));
                 txtDataDesig.setText(rs1.getString("est_dt_desig"));
+                txtId.setText(rs1.getString("est_cod"));
                 cbPriv.setSelectedItem(rs1.getString("est_sit"));
                 cbSala.setSelectedItem(rs1.getString("est_sala"));
                 cbSexo.setSelectedItem(rs1.getString("est_sex"));
                 spPontoCon.setValue(rs1.getInt("est_pnt_cs"));
                 spProxPonto.setValue(rs1.getInt("est_ppnt_cs"));
+                
             }else{
                 JOptionPane.showMessageDialog(this, "Esse estudante não está cadastrado ou foi excluido!!");
                 this.dispose();
             }
             
             Pmp = Conn.prepareStatement(Sql2);
-            Pmp.setString(1, Nome);
-            Pmp.setString(2, Nome);
-            Pmp.setString(3, Nome);
-            Pmp.setString(4, Nome);            
+            Pmp.setString(1, '%'+Nome+'%');
+            Pmp.setString(2, '%'+Nome+'%');
+            Pmp.setString(3, '%'+Nome+'%');
+            Pmp.setString(4, '%'+Nome+'%');            
             ResultSet rs2 = Pmp.executeQuery();
             
             DefaultTableModel table01 = (DefaultTableModel) tbDesignado.getModel();
@@ -74,18 +76,17 @@ public class DetalhesEstudante extends javax.swing.JFrame {
             this.repaint();
            
             
-            while(rs2.next()){
-                
-                if(rs2.getString("prog_oradorD1").equals(Nome)){
+            while(rs2.next()){       
+                if(rs2.getString("prog_oradorD1").contains(Nome)){
                     Object [] info = {rs2.getString("prog_data"), rs2.getString("prog_discurso1"), rs2.getString("prog_pontoD1"), ""};
                     table01.addRow(info);
-                }else if(rs2.getString("prog_oradorD2").equals(Nome)){
+                }else if(rs2.getString("prog_oradorD2").contains(Nome)){
                     Object [] info = {rs2.getString("prog_data"), rs2.getString("prog_discurso2"), rs2.getString("prog_pontoD2"), rs2.getString("prog_ajudanteD2")};
                     table01.addRow(info);
-                }else if(rs2.getString("prog_oradorD3").equals(Nome)){
+                }else if(rs2.getString("prog_oradorD3").contains(Nome)){
                     Object [] info = {rs2.getString("prog_data"), rs2.getString("prog_discurso3"), rs2.getString("prog_pontoD3"), rs2.getString("prog_ajudanteD3")};
                     table01.addRow(info);
-                }else if(rs2.getString("prog_oradorD4").equals(Nome)){
+                }else if(rs2.getString("prog_oradorD4").contains(Nome)){
                     Object [] info = {rs2.getString("prog_data"), rs2.getString("prog_discurso4"), rs2.getString("prog_pontoD4"), rs2.getString("prog_ajudanteD4")};
                     table01.addRow(info);
                 }else{
@@ -95,9 +96,9 @@ public class DetalhesEstudante extends javax.swing.JFrame {
             }
             
             Pmp = Conn.prepareStatement(Sql3);
-            Pmp.setString(1, Nome);
-            Pmp.setString(2, Nome);
-            Pmp.setString(3, Nome);
+            Pmp.setString(1, '%'+Nome+'%');
+            Pmp.setString(2, '%'+Nome+'%');
+            Pmp.setString(3, '%'+Nome+'%');
             ResultSet rs3 = Pmp.executeQuery();
             
             DefaultTableModel table02 = (DefaultTableModel) tbAjudante.getModel();
@@ -106,13 +107,13 @@ public class DetalhesEstudante extends javax.swing.JFrame {
             
             while(rs3.next()){
                 
-                if(rs3.getString("prog_ajudanteD2").equals(Nome)){
+                if(rs3.getString("prog_ajudanteD2").contains(Nome)){
                     Object [] info2 = {rs3.getString("prog_data"), rs3.getString("prog_oradorD2"), rs3.getString("prog_discurso2")};
                     table02.addRow(info2);
-                }else if(rs3.getString("prog_ajudanteD3").equals(Nome)){
+                }else if(rs3.getString("prog_ajudanteD3").contains(Nome)){
                     Object [] info2 = {rs3.getString("prog_data"), rs3.getString("prog_oradorD3"), rs3.getString("prog_discurso3")};
                     table02.addRow(info2);
-                }else if(rs3.getString("prog_ajudanteD4").equals(Nome)){
+                }else if(rs3.getString("prog_ajudanteD4").contains(Nome)){
                    Object [] info2 = {rs3.getString("prog_data"), rs3.getString("prog_oradorD4"), rs3.getString("prog_discurso4")};
                     table02.addRow(info2);
                 }else{
@@ -140,7 +141,6 @@ public class DetalhesEstudante extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        txtNomeEstudante = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         cbPriv = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
@@ -168,6 +168,8 @@ public class DetalhesEstudante extends javax.swing.JFrame {
         tbAjudante = new javax.swing.JTable();
         btnSave = new javax.swing.JButton();
         btnDel = new javax.swing.JButton();
+        txtNomeEstudante = new javax.swing.JTextField();
+        txtId = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -184,10 +186,6 @@ public class DetalhesEstudante extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
-
-        txtNomeEstudante.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtNomeEstudante.setForeground(new java.awt.Color(252, 251, 251));
-        txtNomeEstudante.setText("Nome do Estudante");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(252, 251, 251));
@@ -317,15 +315,21 @@ public class DetalhesEstudante extends javax.swing.JFrame {
             }
         });
 
+        txtNomeEstudante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNomeEstudanteActionPerformed(evt);
+            }
+        });
+
+        txtId.setForeground(new java.awt.Color(255, 255, 255));
+        txtId.setText("ID");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(281, 281, 281)
-                        .addComponent(txtNomeEstudante))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(88, 88, 88)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -389,13 +393,21 @@ public class DetalhesEstudante extends javax.swing.JFrame {
                         .addGap(90, 90, 90)
                         .addComponent(btnDel)))
                 .addContainerGap(49, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(257, 257, 257)
+                .addComponent(txtNomeEstudante, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtId)
+                .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(txtNomeEstudante)
-                .addGap(36, 36, 36)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtNomeEstudante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtId))
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
@@ -447,6 +459,7 @@ public class DetalhesEstudante extends javax.swing.JFrame {
        }else{
            
            Map Dados = new HashMap();
+           Dados.put("ID", txtId.getText());
            Dados.put("Priv", cbPriv.getSelectedItem());
            Dados.put("Contato", txtContato.getText());
            Dados.put("PontoC", spPontoCon.getValue());
@@ -495,6 +508,10 @@ public class DetalhesEstudante extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnDelActionPerformed
+
+    private void txtNomeEstudanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeEstudanteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNomeEstudanteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -561,7 +578,8 @@ public class DetalhesEstudante extends javax.swing.JFrame {
     private javax.swing.JTextField txtContato;
     private javax.swing.JLabel txtDataAju;
     private javax.swing.JLabel txtDataDesig;
-    private javax.swing.JLabel txtNomeEstudante;
+    private javax.swing.JLabel txtId;
+    private javax.swing.JTextField txtNomeEstudante;
     // End of variables declaration//GEN-END:variables
 
   

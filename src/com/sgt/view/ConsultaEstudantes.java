@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import com.sgt.util.UltilClass;
 import com.sgt.db.DaoClass;
+import com.towel.swing.table.TableFilter;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
@@ -34,8 +35,8 @@ import org.freixas.jcalendar.DateListener;
  * @author maste
  */
 public class ConsultaEstudantes extends javax.swing.JFrame {
-    
-    DetalhesEstudante ponte;    
+
+    DetalhesEstudante ponte;
     int id = 0;
     JLabel lbNome = null;
     JLabel lbSex = null;
@@ -47,23 +48,21 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
     JComboBox cbSala = null;
     JCalendarCombo Calendar1 = null;
     JCalendarCombo Calendar2 = null;
-    
-    private void CallDetalhes(String Nome) throws SQLException{
-        
-        if(ponte == null){            
+
+    private void CallDetalhes(String Nome) throws SQLException, ClassNotFoundException {
+
+        if (ponte == null) {
             ponte = new DetalhesEstudante();
             ponte.setVisible(true);
             ponte.setLocationRelativeTo(null);
-            ponte.ponteRecebe(Nome);            
-        }else{
-             ponte.setVisible(true);
-             ponte.setLocationRelativeTo(null);
-             ponte.setState(DetalhesEstudante.NORMAL);
-             ponte.ponteRecebe(Nome);
-        }        
+            ponte.ponteRecebe(Nome);
+        } else {
+            ponte.setVisible(true);
+            ponte.setLocationRelativeTo(null);
+            ponte.setState(DetalhesEstudante.NORMAL);
+            ponte.ponteRecebe(Nome);
+        }
     }
-    
-    
 
     private void CheckElementos(int cod) {
 
@@ -97,8 +96,6 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
         initComponents();
         this.getContentPane().setBackground(Color.decode("#009688"));
     }
-
-   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -190,9 +187,9 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
     private void cbFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFiltroActionPerformed
 
         if (cbFiltro.getSelectedItem().equals("Nome")) {
-            
+
             this.setTitle("Busca por nome - SGT");
-            
+
             if (id >= 0) {
                 CheckElementos(id);
             }
@@ -237,9 +234,9 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
             });
 
         } else if (cbFiltro.getSelectedItem().equals("Sexo")) {
-            
-             this.setTitle("Busca por sexo - SGT");
-            
+
+            this.setTitle("Busca por sexo - SGT");
+
             if (id >= 0) {
                 CheckElementos(id);
             }
@@ -265,9 +262,9 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
                 }
             });
         } else if (cbFiltro.getSelectedItem().equals("Sala")) {
-            
-             this.setTitle("Busca por sala - SGT");
-            
+
+            this.setTitle("Busca por sala - SGT");
+
             if (id >= 0) {
                 CheckElementos(id);
             }
@@ -307,7 +304,7 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
                 opc = 4;
                 this.setTitle("Busca por data de designação - SGT");
             } else {
-                 this.setTitle("Busca por data em que foi ajudante - SGT");
+                this.setTitle("Busca por data em que foi ajudante - SGT");
                 opc = 5;
             }
 
@@ -347,25 +344,22 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
         String Sql = null;
         int interrogacao = 0;
 
-        System.out.println(Dados);
-        System.out.println(Opc);
-
         switch (Opc) {
             case 1:
-                Sql = "SELECT est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_nome LIKE ?";
+                Sql = "SELECT  est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_nome LIKE ?";
                 interrogacao = 1;
                 break;
             case 2:
-                Sql = "SELECT est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_sex LIKE ?";
+                Sql = "SELECT  est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_sex LIKE ?";
 
                 interrogacao = 1;
                 break;
             case 3:
-                Sql = "SELECT est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_sala LIKE ?";
+                Sql = "SELECT  est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_sala LIKE ?";
                 interrogacao = 1;
                 break;
             case 4:
-                Sql = "SELECT est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_dt_desig BETWEEN ? AND ? ORDER BY est_dt_desig ASC";
+                Sql = "SELECT  est_nome, est_ppnt_cs, est_sala, est_aju, est_dt_desig, est_dt_aju, est_sex, est_sit  FROM estudantes WHERE est_dt_desig BETWEEN ? AND ? ORDER BY est_dt_desig ASC";
                 interrogacao = 2;
                 break;
             case 5:
@@ -390,38 +384,39 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
                 x++;
             }
             ResultSet rs = Pmp.executeQuery();
-            
+
             DaoClass.conectar().close();
 
-              tbEstudantes.setModel(DbUtils.resultSetToTableModel(rs));
-              tbEstudantes.getColumnModel().getColumn(0).setHeaderValue("Nome");
-              tbEstudantes.getColumnModel().getColumn(1).setHeaderValue("Proximo Ponto");
-              tbEstudantes.getColumnModel().getColumn(2).setHeaderValue("Sala");
-              tbEstudantes.getColumnModel().getColumn(3).setHeaderValue("Ajudante");
-              tbEstudantes.getColumnModel().getColumn(4).setHeaderValue("Ultima designação");
-              tbEstudantes.getColumnModel().getColumn(5).setHeaderValue("Utima vez que foi ajudante");
-              tbEstudantes.getColumnModel().getColumn(6).setHeaderValue("Sexo");
-              tbEstudantes.getColumnModel().getColumn(7).setHeaderValue("Privilégio");
-              
-              tbEstudantes.addMouseListener(new java.awt.event.MouseAdapter() {
+            tbEstudantes.setModel(DbUtils.resultSetToTableModel(rs));
+            TableFilter filtro = new TableFilter(tbEstudantes.getTableHeader(), DbUtils.resultSetToTableModel(rs));
+            tbEstudantes.setModel(filtro);
+            tbEstudantes.getColumnModel().getColumn(0).setHeaderValue("Nome");
+            tbEstudantes.getColumnModel().getColumn(1).setHeaderValue("Proximo Ponto");
+            tbEstudantes.getColumnModel().getColumn(2).setHeaderValue("Sala");
+            tbEstudantes.getColumnModel().getColumn(3).setHeaderValue("Ajudante");
+            tbEstudantes.getColumnModel().getColumn(4).setHeaderValue("Ultima designação");
+            tbEstudantes.getColumnModel().getColumn(5).setHeaderValue("Utima vez que foi ajudante");
+            tbEstudantes.getColumnModel().getColumn(6).setHeaderValue("Sexo");
+            tbEstudantes.getColumnModel().getColumn(7).setHeaderValue("Privilégio");
+            tbEstudantes.setAutoCreateRowSorter(true);
+
+            tbEstudantes.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if(e.getClickCount() == 2){      
+                    if (e.getClickCount() == 2) {
                         int line = tbEstudantes.getSelectedRow();
                         String Nome = tbEstudantes.getModel().getValueAt(line, 0).toString();
                         try {
                             CallDetalhes(Nome);
                         } catch (SQLException ex) {
                             Logger.getLogger(ConsultaEstudantes.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(ConsultaEstudantes.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
-                
-                  
-              });
-              
-              
 
+            });
 
         } catch (SQLiteException e) {
             JOptionPane.showMessageDialog(null, "Falha ao buscar os dados: " + e.getMessage());
