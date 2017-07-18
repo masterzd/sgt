@@ -48,6 +48,8 @@ public class Periodo extends javax.swing.JFrame {
         data1 = new org.freixas.jcalendar.JCalendarCombo();
         data2 = new org.freixas.jcalendar.JCalendarCombo();
         btnGerar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        cbPerSala = new javax.swing.JComboBox<>();
 
         jTextField1.setText("jTextField1");
 
@@ -71,6 +73,11 @@ public class Periodo extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setText("Sala");
+
+        cbPerSala.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A", "B" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,25 +89,33 @@ public class Periodo extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(268, 268, 268)
-                        .addComponent(btnGerar)))
-                .addContainerGap(280, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(data1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(data2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(79, 79, 79))
+                        .addComponent(btnGerar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(data1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(data2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(241, 241, 241)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbPerSala, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(data1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(data2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cbPerSala, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(btnGerar)
                 .addGap(27, 27, 27))
         );
@@ -157,9 +172,11 @@ public class Periodo extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGerar;
+    private javax.swing.JComboBox<String> cbPerSala;
     private org.freixas.jcalendar.JCalendarCombo data1;
     private org.freixas.jcalendar.JCalendarCombo data2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 
@@ -168,8 +185,22 @@ public class Periodo extends javax.swing.JFrame {
         Connection Conn = DaoClass.conectar();
         HashMap data = new HashMap();
         data.put("dtini", FormatUSA.format(data1.getDate().getTime()));
-        data.put("dtfim", FormatUSA.format(data2.getDate().getTime()));       
-        JasperPrint print = JasperFillManager.fillReport("C:\\SGT\\relJasper\\ProgramaNossaVidaCrista.jasper", data, Conn); 
+        data.put("dtfim", FormatUSA.format(data2.getDate().getTime()));
+        data.put("sala", cbPerSala.getSelectedItem().toString());
+        
+        System.out.println(data.toString());
+        
+        
+        String OS = System.getProperty("os.name");
+        String File;
+        if(OS.equals("Linux")){
+               File = "/home/henrique/SGT/relJasper/ProgramaNossaVidaCrista.jasper"; 
+            }else{
+               File = "C:\\SGT\\relJasper\\ProgramaNossaVidaCrista.jasper"; 
+            }
+        
+        
+        JasperPrint print = JasperFillManager.fillReport(File, data, Conn); 
         
         JasperViewer.viewReport(print, false, Locale.US);
     }

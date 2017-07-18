@@ -56,6 +56,7 @@ public class Model {
             ArrayList Estudantes = new ArrayList();
 
             while (Rset.next()) {
+                System.out.println(Rset.getString("est_nome"));
                 Estudantes.add(Rset.getString("est_nome"));
             }
             Rset.close();
@@ -72,11 +73,12 @@ public class Model {
     /* Método usado para salvar os dados da programação semanal  */
     public Map GrvProg(Map DadosProg) {
         String Sql = "INSERT INTO programacao (prog_data, prog_sala, prog_discurso1, prog_oradorD1, prog_pontoD1, prog_discurso2, prog_oradorD2, prog_ajudanteD2, prog_pontoD2, prog_discurso3, prog_oradorD3, prog_ajudanteD3,prog_pontoD3, prog_discurso4, prog_oradorD4, prog_ajudanteD4, prog_pontoD4) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
-        String Query3 = "SELECT prog_data FROM programacao WHERE prog_data = ?";
+        String Query3 = "SELECT prog_data FROM programacao WHERE prog_data = ? AND prog_sala = ?";
         try {
 
             PreparedStatement Pmp = Conexao.prepareStatement(Query3);
             Pmp.setString(1, DadosProg.get("Data").toString());
+            Pmp.setString(2, DadosProg.get("Sala").toString());
             ResultSet Rs = Pmp.executeQuery();
             if (Rs.next()) {
                 Retorno.put("Retorno", false);

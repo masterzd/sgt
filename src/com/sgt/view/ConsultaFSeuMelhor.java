@@ -38,6 +38,7 @@ public class ConsultaFSeuMelhor extends javax.swing.JInternalFrame {
     
         Model Call = new Model();
         ArrayList Back = Call.GetEstudantes();
+        System.out.println(Back.toString());
         int Tam = Back.size(); 
         
             cbAjuEstudoBiblico.addItem("");
@@ -49,7 +50,8 @@ public class ConsultaFSeuMelhor extends javax.swing.JInternalFrame {
             cbPartEstudoBiblico.addItem("");
         
         
-        for(int i = 1; i < Tam; i++){
+        for(int i = 0; i < Tam; i++){
+            
             cbAjuEstudoBiblico.addItem(Back.get(i).toString());
             cbAjuPriVis.addItem(Back.get(i).toString());
             cbAjuRevisita.addItem(Back.get(i).toString());
@@ -204,6 +206,12 @@ public class ConsultaFSeuMelhor extends javax.swing.JInternalFrame {
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Ajudante:");
+
+        cbPartPriVis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbPartPriVisActionPerformed(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
@@ -517,6 +525,10 @@ public class ConsultaFSeuMelhor extends javax.swing.JInternalFrame {
         CallPer.setVisible(true);
         CallPer.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnPrintActionPerformed
+
+    private void cbPartPriVisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPartPriVisActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbPartPriVisActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

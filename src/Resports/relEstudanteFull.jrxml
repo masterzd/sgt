@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relEstudanteFull" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4f97c4ce-9c37-4f38-8425-15779a96e541">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select * from estudantes where est_sit not like 'Desqualificado' order by est_nome asc]]>
+	</queryString>
+	<field name="est_cod" class="java.lang.Object"/>
+	<field name="est_nome" class="java.lang.Object"/>
+	<field name="est_pnt_cs" class="java.lang.Object"/>
+	<field name="est_ppnt_cs" class="java.lang.Object"/>
+	<field name="est_sala" class="java.lang.Object"/>
+	<field name="est_aju" class="java.lang.Object"/>
+	<field name="est_dt_desig" class="java.lang.Object"/>
+	<field name="est_dt_aju" class="java.lang.Object"/>
+	<field name="est_dt_ult_dis" class="java.lang.Object"/>
+	<field name="est_sex" class="java.lang.Object"/>
+	<field name="est_sit" class="java.lang.Object"/>
+	<field name="est_tel" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="127" y="23" width="310" height="30" uuid="97bc8454-4395-4660-8b84-f6fdce4674e9"/>
+				<textElement>
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Lista dos Estudantes matriculados]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="1" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="127" height="20" uuid="c4a4957b-1dcd-4bff-a0f8-f4fb55b9166a"/>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="127" y="0" width="82" height="20" uuid="9b0a98d1-dda0-444d-b59e-5096492efc66"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Proximo Ponto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="0" width="100" height="20" uuid="f6ead40b-da7c-496f-a67a-1b79e4b38383"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Ajudante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="0" width="100" height="20" uuid="03d73847-0d39-454f-a21b-b219356d7630"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Data Ult. Desig]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="0" width="100" height="20" uuid="d2ce9c58-0c4e-40b5-beac-e22a70e28884"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Foi Ajudante em]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="127" height="20" uuid="efdb1a6d-b34f-4950-8f02-862fb867c20d"/>
+				<textFieldExpression><![CDATA[""+$F{est_nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="127" y="0" width="82" height="20" uuid="b7d8b113-bf4e-4a60-82da-bdefea8b6816"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[""+$F{est_ppnt_cs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="209" y="0" width="100" height="20" uuid="db5b780d-771e-40a3-a9ac-82975dc57a22"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[""+$F{est_aju}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="0" width="100" height="20" uuid="728177d5-4ec8-4389-b094-7bdbeaf439d9"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[""+$F{est_dt_desig}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="409" y="0" width="100" height="20" uuid="83fa95e5-c7b5-4251-a342-e41c05ec7d35"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[""+$F{est_dt_aju}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="2" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

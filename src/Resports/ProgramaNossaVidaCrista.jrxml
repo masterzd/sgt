@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="teste01" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="84830fbe-e709-42e7-8fca-0354c20e8345">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#908B8B"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#778899">
+		<box>
+			<pen lineWidth="0.5" lineColor="#908B8B"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFDFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#908B8B"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#908B8B"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="739f2920-44a5-411b-a576-7c68f72a8f7c"/>
+	<parameter name="dtini" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dtfim" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sala" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from programacao where prog_sala = $P{sala} and prog_data between $P{dtini} and $P{dtfim};]]>
+	</queryString>
+	<field name="prog_cod" class="java.lang.Object"/>
+	<field name="prog_data" class="java.lang.Object"/>
+	<field name="prog_sala" class="java.lang.Object"/>
+	<field name="prog_discurso1" class="java.lang.Object"/>
+	<field name="prog_oradorD1" class="java.lang.Object"/>
+	<field name="prog_pontoD1" class="java.lang.Object"/>
+	<field name="prog_discurso2" class="java.lang.Object"/>
+	<field name="prog_oradorD2" class="java.lang.Object"/>
+	<field name="prog_ajudanteD2" class="java.lang.Object"/>
+	<field name="prog_pontoD2" class="java.lang.Object"/>
+	<field name="prog_discurso3" class="java.lang.Object"/>
+	<field name="prog_oradorD3" class="java.lang.Object"/>
+	<field name="prog_ajudanteD3" class="java.lang.Object"/>
+	<field name="prog_pontoD3" class="java.lang.Object"/>
+	<field name="prog_discurso4" class="java.lang.Object"/>
+	<field name="prog_oradorD4" class="java.lang.Object"/>
+	<field name="prog_ajudanteD4" class="java.lang.Object"/>
+	<field name="prog_pontoD4" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement x="100" y="11" width="378" height="28" uuid="e5e38ed8-eb18-4a7e-8e04-d0fcf1e53d80"/>
+				<textElement>
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Programa Nossa Vida Cristã - Sala: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="424" y="11" width="121" height="28" uuid="ab05449c-ffb1-4300-9f52-09f7a6ebf4e8"/>
+				<textElement>
+					<font size="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{prog_sala}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="424" y="0" width="80" height="20" uuid="89f9e4fe-ac8c-4437-a6a5-1819c18bf80f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="505" y="0" width="40" height="20" uuid="a107efef-a5ec-4cc5-816a-e337ea506553"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="349" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="60" width="454" height="28" forecolor="#B9AFAF" backcolor="#A4A2A2" uuid="d0a36392-1ecb-4fb0-999d-dd388ab24ed0"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="66" width="180" height="20" forecolor="#FCFBFB" uuid="4c55fd88-67e5-4858-b027-945456583c73"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tesouros da Palavra de Deus]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="106" width="145" height="16" uuid="d29bf985-fc61-4d34-bfdc-aaeabe52c52a"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Leitura de Bíblia: (4 min):]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="155" y="106" width="114" height="16" uuid="1570074c-45b8-4db2-9593-27664821ce70"/>
+				<textFieldExpression><![CDATA[""+$F{prog_discurso1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="279" y="106" width="75" height="16" uuid="75998756-b7f8-4e60-acc7-96a46f05241c"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Participante:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="19" width="91" height="20" uuid="138c863d-9edf-4496-9389-3e1f281fc4ac"/>
+				<textElement>
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Semana de : ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="117" y="19" width="107" height="20" uuid="f3ddfc67-ac95-44d3-9303-98056b46b143"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/mm/yyyy").format(new java.text.SimpleDateFormat("yyyy-mm-dd").parse($F{prog_data}))]]></textFieldExpression>
+				<!--<textFieldExpression><![CDATA[""+ $F{prog_data}]]></textFieldExpression>-->
+			</textField>
+			<textField>
+				<reportElement x="354" y="106" width="113" height="16" uuid="e90c9e39-1f7c-4d2a-82cf-3a35a10f8ef9"/>
+				<textFieldExpression><![CDATA[""+$F{prog_oradorD1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="478" y="106" width="40" height="16" uuid="2d1a1489-96ef-46e5-a673-19eef6845c47"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ponto:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="518" y="106" width="37" height="16" uuid="e48dae89-00d8-401f-9f79-493b297e6505"/>
+				<textFieldExpression><![CDATA[""+$F{prog_pontoD1}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="136" width="454" height="28" forecolor="#B9AFAF" backcolor="#C1AD3D" uuid="0b739b64-8d85-4bc2-82a8-e1df28c5e98f"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="142" width="180" height="20" forecolor="#FCFBFB" uuid="df2c76aa-86fc-4c1b-ba45-38391f7c142d"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Faça seu melhor no ministério]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="181" width="95" height="17" uuid="7fa044f5-6f3e-4517-83e0-67da02c9f5b9"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Primeira Visita:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="105" y="181" width="450" height="17" uuid="c2cc9194-b46e-4362-adb8-0b3a3808babd"/>
+				<textFieldExpression><![CDATA[""+$F{prog_discurso2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="198" width="76" height="18" uuid="b61d341f-742f-4620-9fe7-ba606838b443"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Participante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="86" y="198" width="120" height="18" uuid="998c1593-e947-49b1-be4d-5e3ef2c44177"/>
+				<textFieldExpression><![CDATA[""+$F{prog_oradorD2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="224" y="198" width="63" height="18" uuid="45430431-89bd-4685-906e-7e1f05b062d6"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ajudante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="287" y="198" width="131" height="18" uuid="b4c429c7-cdb5-4c90-80b1-c441b036fdf4"/>
+				<textFieldExpression><![CDATA[""+$F{prog_ajudanteD2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="454" y="198" width="41" height="14" uuid="24a763bc-ba72-4b91-9ab2-c3d9a0ae8127"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ponto:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="504" y="196" width="37" height="20" uuid="625eb389-0509-41fd-b996-0a18da0f54b0"/>
+				<textFieldExpression><![CDATA[""+$F{prog_pontoD2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="233" width="53" height="15" uuid="a203e9b2-0fbe-4dea-aec2-d75002ac00c2"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Revisita:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="63" y="233" width="491" height="15" uuid="8e82641f-1b2c-431f-aa7f-dcd44b3601b6"/>
+				<textFieldExpression><![CDATA[""+$F{prog_discurso3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="248" width="76" height="18" uuid="5511930a-8095-4817-b130-9d8e4785ec9a"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Participante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="86" y="248" width="120" height="18" uuid="5f85b118-1600-46c2-b02e-2499aed64e11"/>
+				<textFieldExpression><![CDATA[""+$F{prog_oradorD3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="224" y="248" width="63" height="18" uuid="f787c839-d72e-4b50-a1e4-efa10b19d550"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ajudante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="297" y="248" width="121" height="18" uuid="1343c15c-a122-42e0-b516-0d650ecd31c1"/>
+				<textFieldExpression><![CDATA[""+$F{prog_ajudanteD3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="454" y="248" width="41" height="14" uuid="43907543-74fd-4307-a4a2-551ebf17a0e4"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ponto:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="504" y="248" width="37" height="14" uuid="2423c29f-7c32-446d-badf-6e743984a559"/>
+				<textFieldExpression><![CDATA[""+$F{prog_pontoD3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="289" width="91" height="15" uuid="72bf2781-ca35-466e-8f76-055fbba67856"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estudo Bíblico:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="289" width="448" height="15" uuid="3739ad7e-a257-42de-9aa9-a8d799b6a129"/>
+				<textFieldExpression><![CDATA[""+$F{prog_discurso4}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="304" width="76" height="18" uuid="90c1c4e7-02f0-4ff6-9102-655752f2f720"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Participante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="86" y="304" width="120" height="18" uuid="8bea4fcf-e7da-4d03-8bb1-de0e73df4cde"/>
+				<textFieldExpression><![CDATA[""+$F{prog_oradorD4}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="224" y="304" width="63" height="18" uuid="5a9a1908-2d08-41e6-85a0-df6e6d7a0d8d"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ajudante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="297" y="304" width="121" height="18" uuid="beeb0ac5-b7b7-46c4-8884-87dda6283e7b"/>
+				<textFieldExpression><![CDATA[""+$F{prog_ajudanteD4}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="454" y="304" width="41" height="14" uuid="c5a52dc9-fae0-42a4-b1a6-8b2805d276fe"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ponto:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="504" y="304" width="41" height="14" uuid="a365fc6e-c27e-48b2-8230-92cd6bb219b7"/>
+				<textFieldExpression><![CDATA[""+$F{prog_pontoD4}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="44" splitType="Stretch"/>
+	</summary>
+</jasperReport>

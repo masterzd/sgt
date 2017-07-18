@@ -44,7 +44,7 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
             cbPartEstudoBiblico.addItem("");
         
         
-        for(int i = 1; i < Tam; i++){
+        for(int i = 0; i < Tam; i++){
             cbAjuEstudoBiblico.addItem(Back.get(i).toString());
             cbAjuPriVis.addItem(Back.get(i).toString());
             cbAjuRevisita.addItem(Back.get(i).toString());
@@ -88,7 +88,8 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
            Map Execute = CallModel.GrvProg(DadosProg);
            
            if(Execute.get("Retorno").equals(true)){
-               int decisao =  JOptionPane.showConfirmDialog(null, Execute.get("Mensagem"));
+               Object[] options = { "Confirmar", "Cancelar" };
+               int decisao =  JOptionPane.showConfirmDialog(null, "Dados Salvos com sucesso. Gostaria de cadastrar um novo programa?","",JOptionPane.YES_NO_OPTION);
             
                if(decisao == 0){
                 txtLeitura.setText(null);
@@ -112,7 +113,7 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
                }
             
            }else{
-               JOptionPane.showMessageDialog(null, Execute.get("Mensagem"));
+               JOptionPane.showMessageDialog(null, "Falha ao cadastrar os dados");
            }
            
            
@@ -261,6 +262,12 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
         btnSaveProg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveProgActionPerformed(evt);
+            }
+        });
+
+        cbPartLeitura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbPartLeituraActionPerformed(evt);
             }
         });
 
@@ -441,6 +448,10 @@ public class NovoProgramaFSeuMelhor extends javax.swing.JInternalFrame {
     private void cbAjuRevisitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAjuRevisitaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbAjuRevisitaActionPerformed
+
+    private void cbPartLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPartLeituraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbPartLeituraActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

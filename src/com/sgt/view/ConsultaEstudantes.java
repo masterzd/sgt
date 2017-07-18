@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import com.sgt.util.UltilClass;
 import com.sgt.db.DaoClass;
-import com.towel.swing.table.TableFilter;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
@@ -388,8 +387,6 @@ public class ConsultaEstudantes extends javax.swing.JFrame {
             DaoClass.conectar().close();
 
             tbEstudantes.setModel(DbUtils.resultSetToTableModel(rs));
-            TableFilter filtro = new TableFilter(tbEstudantes.getTableHeader(), DbUtils.resultSetToTableModel(rs));
-            tbEstudantes.setModel(filtro);
             tbEstudantes.getColumnModel().getColumn(0).setHeaderValue("Nome");
             tbEstudantes.getColumnModel().getColumn(1).setHeaderValue("Proximo Ponto");
             tbEstudantes.getColumnModel().getColumn(2).setHeaderValue("Sala");
